@@ -18,11 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.GetFitHomeActivity" />
+        <activity android:name=".ui.GetFitHomeActivity"
+            android:theme="@style/ActionBarTheme"/>
         <activity android:name=".ui.FavoriteVideosActivity"
-            android:parentActivityName=".ui.GetFitHomeActivity">
+            android:parentActivityName=".ui.GetFitHomeActivity"
+            android:theme="@style/ActionBarTheme">
         </activity>
         <activity android:name=".ui.ReportActivity"
+            android:theme="@style/ActionBarTheme"
             android:parentActivityName=".ui.GetFitHomeActivity"></activity>
     </application>
 

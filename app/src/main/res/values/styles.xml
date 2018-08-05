@@ -9,6 +9,12 @@
         <item name="colorControlNormal">#FFFFFF</item>
     </style>
 
+    <style name="ActionBarTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+    </style>
 
     <style name="Widget.Design.TextInputLayout" parent="AppTheme">
         <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
@@ -19,7 +25,6 @@
     </style>
 
     <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
-        <!-- Floating label appearance here -->
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
