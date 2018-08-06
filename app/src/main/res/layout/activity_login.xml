@@ -164,6 +164,7 @@
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.346"
         app:layout_constraintStart_toStartOf="parent"
@@ -176,11 +177,10 @@
             android:layout_marginEnd="@dimen/margin_72_dp"
             android:text="@string/google" />
 
-        <Button
+        <com.facebook.login.widget.LoginButton
             android:id="@+id/btnFacebook"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/facebook" />
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 

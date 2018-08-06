@@ -12,6 +12,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,11 +49,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etPassword;
     private Button btnLogin;
     private SignInButton btnGoogle;
-    private Button btnFacebook;
+    private LoginButton btnFacebook;
     private TextView tvError;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     private ProgressBar pbLoading;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin = findViewById(R.id.btnLogin);
         btnGoogle = findViewById(R.id.btnGoogle);
         btnFacebook = findViewById(R.id.btnFacebook);
+        btnFacebook.setReadPermissions("email", "public_profile");
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         tvError = findViewById(R.id.tvError);
@@ -125,7 +136,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.btnFacebook:
+                callbackManager = CallbackManager.Factory.create();
+                LoginManager.getInstance().registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                // App code
+                                Toast.makeText(LoginActivity.this, "Callback registered!", Toast.LENGTH_SHORT).show();
+                                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                                handleFacebookAccessToken(accessToken);
+                            }
 
+                            @Override
+                            public void onCancel() {
+                                // App code
+                                Toast.makeText(LoginActivity.this, "Cancelled.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(FacebookException exception) {
+                                Toast.makeText(LoginActivity.this, "Something went wrong. Try again!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 break;
         }
     }
@@ -155,6 +187,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 tvError.setText(task.getException().getMessage());
                                 updateUI(null);
                             }
+                        }
+
+                    }
+                });
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            tvError.setVisibility(View.VISIBLE);
+                            tvError.setText(task.getException().getMessage());
+                            updateUI(null);
                         }
 
                     }
@@ -192,6 +251,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(callbackManager != null){
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -225,6 +288,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
 //                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            tvError.setVisibility(View.VISIBLE);
+                            tvError.setText(task.getException().getMessage());
                             updateUI(null);
                         }
                     }

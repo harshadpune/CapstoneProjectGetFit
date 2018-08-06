@@ -9,4 +9,7 @@
     <string name="Email">Email</string>
     <string name="google">Google</string>
     <string name="facebook">Facebook</string>
+    <string name="facebook_app_id">1901697706801344</string>
+    <string name="fb_login_protocol_scheme">fb1901697706801344</string>
+
 </resources>
