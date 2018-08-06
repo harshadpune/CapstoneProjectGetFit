@@ -43,5 +43,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="CardTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_24_sp</item>
+    </style>
 
 </resources>
