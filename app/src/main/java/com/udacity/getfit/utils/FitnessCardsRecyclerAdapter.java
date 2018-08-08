@@ -1,9 +1,11 @@
 package com.udacity.getfit.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
-
-import java.util.List;
+import com.udacity.getfit.ui.GetFitWorkoutListActivity;
 
 public class FitnessCardsRecyclerAdapter extends RecyclerView.Adapter<FitnessCardsRecyclerAdapter.ViewHolder> {
 
@@ -74,7 +75,9 @@ public class FitnessCardsRecyclerAdapter extends RecyclerView.Adapter<FitnessCar
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.cvFitness:
-
+                    Intent getFitWorkoutListActivity  = new Intent(context, GetFitWorkoutListActivity.class);
+                    getFitWorkoutListActivity.putExtra(AppConstants.INTENT_WORKOUT_INFO, fitnessData.workoutInformation.get(getAdapterPosition()));
+                    context.startActivity(getFitWorkoutListActivity);
                     break;
             }
         }

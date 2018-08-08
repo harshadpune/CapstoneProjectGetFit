@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             initComponents();
             setListeners();
         } else {
-            Toast.makeText(this, "User Logged In!!" + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
             Intent getFitHomeActivity = new Intent(LoginActivity.this, GetFitHomeActivity.class);
             startActivity(getFitHomeActivity);
             finish();

@@ -11,5 +11,8 @@
     <string name="facebook">Facebook</string>
     <string name="facebook_app_id">1901697706801344</string>
     <string name="fb_login_protocol_scheme">fb1901697706801344</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="logged_in">Your are logged in as : </string>
 
 </resources>

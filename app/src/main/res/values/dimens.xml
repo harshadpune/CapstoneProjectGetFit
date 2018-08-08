@@ -8,4 +8,7 @@
     <dimen name="card_radius_12_dp">12dp</dimen>
     <dimen name="margin_24_dp">24dp</dimen>
     <dimen name="text_size_24_sp">24sp</dimen>
+    <dimen name="height_150_dp">150dp</dimen>
+    <dimen name="line_spacing_16_sp">16sp</dimen>
+    <dimen name="margin_50_dp">50dp</dimen>
 </resources>

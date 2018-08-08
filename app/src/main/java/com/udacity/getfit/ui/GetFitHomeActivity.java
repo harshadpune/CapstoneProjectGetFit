@@ -5,13 +5,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +34,7 @@ public class GetFitHomeActivity extends AppCompatActivity {
     private ImageView ivDailyVideo, ivPlay;
     private ProgressBar pbLoading;
     private RecyclerView rvFitnessCards;
+    private TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class GetFitHomeActivity extends AppCompatActivity {
         ivPlay = findViewById(R.id.ivPlay);
         pbLoading = findViewById(R.id.pbLoading);
         rvFitnessCards = findViewById(R.id.rvFitnessCards);
+        tvUserName = findViewById(R.id.tvUserName);
+        tvUserName.setText(getString(R.string.logged_in)+" "+FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
     private void loadFitnessData() {
@@ -60,15 +63,9 @@ public class GetFitHomeActivity extends AppCompatActivity {
         fitnessData.enqueue(new Callback<List<FitnessData>>() {
             @Override
             public void onResponse(Call<List<FitnessData>> call, Response<List<FitnessData>> response) {
-                Toast.makeText(GetFitHomeActivity.this, "Success!!", Toast.LENGTH_SHORT).show();
-
-
                 List<FitnessData> fitnessData = response.body();
                 loadVideoThumbnail(fitnessData.get(0).dailyVideo);
                 rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData.get(0)));
-                Log.d("Testing", "-----------"+fitnessData.get(0).dailyVideo);
-                Log.d("Testing", "-----------"+fitnessData.get(0).workoutInformation.get(0).type);
-                Log.d("Testing", "-----------"+fitnessData.get(0).workoutInformation.get(0).workoutLists.get(0).workoutName);
             }
 
             @Override
@@ -77,22 +74,6 @@ public class GetFitHomeActivity extends AppCompatActivity {
                 fitnessData.cancel();
             }
         });
-       /* fitnessData.enqueue(new retrofit2.Callback<FitnessData>() {
-            @Override
-            public void onResponse(Call<FitnessData> call, Response<FitnessData> response) {
-                Toast.makeText(GetFitHomeActivity.this, "Success!!", Toast.LENGTH_SHORT).show();
-                FitnessData fitnessData = response.body();
-                Log.d("Testing", "-----------"+fitnessData.dailyVideo);
-                Log.d("Testing", "-----------"+fitnessData.workoutInformation.get(0).type);
-                Log.d("Testing", "-----------"+fitnessData.workoutInformation.get(0).workoutLists.get(0).workoutName);
-            }
-
-            @Override
-            public void onFailure(Call<FitnessData> call, Throwable t) {
-                Toast.makeText(GetFitHomeActivity.this, "Failure!!", Toast.LENGTH_SHORT).show();
-                fitnessData.cancel();
-            }
-        });*/
     }
 
     private void loadVideoThumbnail(String dailyVideo) {

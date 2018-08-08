@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.WorkoutDetailsActivity">
+
+     <android.support.v4.widget.NestedScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@color/appBackground">
+
+ <android.support.constraint.ConstraintLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
+     <TextView
+         android:id="@+id/tvWorkoutName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         style="@style/CardTextViewStyle"
+         android:layout_marginEnd="8dp"
+         android:layout_marginStart="8dp"
+         android:layout_marginTop="@dimen/height_150_dp"
+         tools:text="Heel Touch"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+     <TextView
+         android:id="@+id/tvWorkoutTimer"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="75dp"
+         android:layout_marginTop="50dp"
+         style="@style/CardTextViewStyle"
+         tools:text="00:00"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+     <TextView
+         android:id="@+id/tvWorkoutDetails"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="8dp"
+         android:layout_marginStart="8dp"
+         android:layout_marginTop="32dp"
+         android:paddingLeft="@dimen/margin_50_dp"
+         android:paddingRight="@dimen/margin_50_dp"
+         tools:text="Lie on the ground with your legs bent and your arms by your side. Slightly lift your upper body off the floor and make your hands alternately reach your heels."
+         android:lineSpacingExtra="@dimen/line_spacing_16_sp"
+         style="@style/CardTextViewStyle"
+         android:textSize="16sp"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/tvWorkoutName" />
+
+     <Button
+         android:id="@+id/btnStart"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="40dp"
+         android:layout_marginTop="32dp"
+         android:text="@string/start"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/tvWorkoutDetails" />
+
+     <Button
+         android:id="@+id/btnStop"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="40dp"
+         android:text="@string/stop"
+         app:layout_constraintBaseline_toBaselineOf="@+id/btnStart"
+         app:layout_constraintEnd_toEndOf="parent" />
+ </android.support.constraint.ConstraintLayout>
+
+     </android.support.v4.widget.NestedScrollView>
+</layout>
