@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,12 +31,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetFitHomeActivity extends AppCompatActivity {
+public class GetFitHomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView ivDailyVideo, ivPlay;
     private ProgressBar pbLoading;
     private RecyclerView rvFitnessCards;
     private TextView tvUserName;
+    private CardView cvFitness;
+    private String videoId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,12 @@ public class GetFitHomeActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getResources().getString(R.string.workoutCategories));
         initComponents();
+        setListeners();
         loadFitnessData();
+    }
+
+    private void setListeners() {
+        cvFitness.setOnClickListener(this);
     }
 
     private void initComponents() {
@@ -52,6 +61,7 @@ public class GetFitHomeActivity extends AppCompatActivity {
         pbLoading = findViewById(R.id.pbLoading);
         rvFitnessCards = findViewById(R.id.rvFitnessCards);
         tvUserName = findViewById(R.id.tvUserName);
+        cvFitness = findViewById(R.id.cvFitness);
         tvUserName.setText(getString(R.string.logged_in)+" "+FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
@@ -66,6 +76,7 @@ public class GetFitHomeActivity extends AppCompatActivity {
                 List<FitnessData> fitnessData = response.body();
                 loadVideoThumbnail(fitnessData.get(0).dailyVideo);
                 rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData.get(0)));
+                videoId = fitnessData.get(0).dailyVideo;
             }
 
             @Override
@@ -124,5 +135,20 @@ public class GetFitHomeActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.cvFitness:
+                if(TextUtils.isEmpty(videoId))
+                    Toast.makeText(this, "Please wait..", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent youtubePlayerIntent = new Intent(GetFitHomeActivity.this, YoutubePlayerActivity.class);
+                    youtubePlayerIntent.putExtra(AppConstants.VIDEO_ID, "" + videoId);
+                    startActivity(youtubePlayerIntent);
+                }
+            break;
+        }
     }
 }
