@@ -10,6 +10,8 @@ public class FitnessData implements Serializable {
 
     @SerializedName("dailyVideo")
     public String dailyVideo;
+    @SerializedName("dailyVideoName")
+    public String dailyVideoName;
     @SerializedName("workout")
     public List<WorkoutInformation> workoutInformation = new ArrayList();
 

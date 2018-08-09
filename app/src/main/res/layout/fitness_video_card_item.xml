@@ -22,7 +22,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
             <ImageView
                 android:id="@+id/ivDailyVideo"
                 android:layout_width="match_parent"
@@ -58,8 +59,8 @@
                 android:layout_marginRight="@dimen/margin_24_dp"
                 android:layout_marginTop="@dimen/margin_24_dp"
                 android:layout_marginBottom="@dimen/margin_8_dp"
+                android:textSize="14sp"
                 android:layout_below="@id/ivDailyVideo"
-                android:textColor="@color/black"
                 tools:text="Daily Video"
                 style="@style/CardTextViewStyle" />
         </RelativeLayout>

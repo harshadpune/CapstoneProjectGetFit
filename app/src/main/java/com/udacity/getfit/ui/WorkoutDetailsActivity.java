@@ -1,13 +1,13 @@
 package com.udacity.getfit.ui;
 
 import android.databinding.DataBindingUtil;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.WindowManager;
 
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
@@ -23,6 +23,7 @@ public class WorkoutDetailsActivity extends FragmentActivity implements ViewPage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_workout_details);
         activityWorkoutDetailsBinding = DataBindingUtil.setContentView(this,R.layout.activity_workout_details);
         workoutInformation = (FitnessData.WorkoutInformation) getIntent().getSerializableExtra(AppConstants.INTENT_WORKOUT_INFO);

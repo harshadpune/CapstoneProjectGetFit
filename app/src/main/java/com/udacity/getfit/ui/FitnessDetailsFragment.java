@@ -1,6 +1,7 @@
 package com.udacity.getfit.ui;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
@@ -23,6 +25,8 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
     private TextView tvWorkoutDetails;
     private Button btnStart;
     private Button btnStop;
+    private Chronometer cmWorkoutTimer;
+    private long lastPause = 0;
 
     @Nullable
     @Override
@@ -32,6 +36,7 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
         workoutList = (FitnessData.WorkoutList) bundle.getSerializable(AppConstants.SELECTED_WORKOUT_DETAILS);
         tvWorkoutName = rootView.findViewById(R.id.tvWorkoutName);
         tvWorkoutDetails = rootView.findViewById(R.id.tvWorkoutDetails);
+        cmWorkoutTimer = rootView.findViewById(R.id.cmWorkoutTimer);
         btnStart = rootView.findViewById(R.id.btnStart);
         btnStop = rootView.findViewById(R.id.btnStop);
 
@@ -64,10 +69,16 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
 
             case R.id.btnStart:
                 ttobj.speak(workoutList.workoutDetails, TextToSpeech.QUEUE_FLUSH, null);
+                if(lastPause == 0)
+                    cmWorkoutTimer.setBase(SystemClock.elapsedRealtime());
+                else
+                    cmWorkoutTimer.setBase(cmWorkoutTimer.getBase() + SystemClock.elapsedRealtime()- lastPause);
+                    cmWorkoutTimer.start();
                 break;
 
             case R.id.btnStop:
-
+                lastPause = SystemClock.elapsedRealtime();
+                cmWorkoutTimer.stop();
                 break;
         }
     }

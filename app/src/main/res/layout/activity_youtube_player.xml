@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/appBackground">
+<RelativeLayout
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
 
+    <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="@dimen/height_40_dp"
+        android:layout_height="@dimen/height_40_dp"
+        android:layout_marginEnd="@dimen/margin_24_dp"
+        android:layout_marginRight="@dimen/margin_24_dp"
+        android:stepSize="1.0"
+        android:src="@drawable/star_unselected"
+        android:layout_marginTop="@dimen/margin_24_dp"
+        android:layout_alignParentRight="true"/>
 
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/youtubePlayer"
         android:layout_width="match_parent"
-        android:layout_height="250dp"></com.google.android.youtube.player.YouTubePlayerView>
+        android:layout_height="250dp"
+        android:layout_marginTop="@dimen/margin_100_dp"></com.google.android.youtube.player.YouTubePlayerView>
 
-    <Button
+    <TextView
+        android:id="@+id/tvFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorite"
+        style="@style/CardTextViewStyle"
+        android:text="@string/someMotivationForYour"
         android:layout_below="@id/youtubePlayer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_20_dp"/>
+        android:layout_margin="@dimen/margin_24_dp" />
 </RelativeLayout>
+</ScrollView>

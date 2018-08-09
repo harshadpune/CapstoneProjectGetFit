@@ -10,5 +10,5 @@ public class AppConstants {
     public static final String SELECTED_WORKOUT_DETAILS = "selectedWorkoutDetails" ;
     public static final String VIDEO_ID = "videoId";
     public static final String YOUTUBE_API_KEY = "AIzaSyALmeO05S_HGh1aWyQDoSNCD-PzxPQdNqc";
-
+    public static final String VIDEO_NAME = "videoName";
 }

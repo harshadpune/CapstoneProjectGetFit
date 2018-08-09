@@ -11,12 +11,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
@@ -39,10 +41,13 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
     private TextView tvUserName;
     private CardView cvFitness;
     private String videoId = "";
+    private TextView tvDailyVideo;
+    private String videoName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_get_fit_home);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getResources().getString(R.string.workoutCategories));
@@ -56,11 +61,13 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initComponents() {
+
         ivDailyVideo = findViewById(R.id.ivDailyVideo);
         ivPlay = findViewById(R.id.ivPlay);
         pbLoading = findViewById(R.id.pbLoading);
         rvFitnessCards = findViewById(R.id.rvFitnessCards);
         tvUserName = findViewById(R.id.tvUserName);
+        tvDailyVideo = findViewById(R.id.tvDailyVideo);
         cvFitness = findViewById(R.id.cvFitness);
         tvUserName.setText(getString(R.string.logged_in)+" "+FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
@@ -77,6 +84,8 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
                 loadVideoThumbnail(fitnessData.get(0).dailyVideo);
                 rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData.get(0)));
                 videoId = fitnessData.get(0).dailyVideo;
+                videoName = ""+fitnessData.get(0).dailyVideoName;
+                tvDailyVideo.setText(videoName);
             }
 
             @Override
@@ -146,6 +155,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
                 else {
                     Intent youtubePlayerIntent = new Intent(GetFitHomeActivity.this, YoutubePlayerActivity.class);
                     youtubePlayerIntent.putExtra(AppConstants.VIDEO_ID, "" + videoId);
+                    youtubePlayerIntent.putExtra(AppConstants.VIDEO_NAME, "" + videoName);
                     startActivity(youtubePlayerIntent);
                 }
             break;

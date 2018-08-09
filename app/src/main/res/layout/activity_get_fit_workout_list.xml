@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/ivWorkout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_150_dp"
+                android:layout_height="@dimen/height_200_dp"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
 
@@ -50,7 +50,8 @@
                         android:fontFamily="sans-serif-condensed"
                         android:lineSpacingMultiplier="0.9"
                         android:textColor="#fff"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginLeft="@dimen/margin_20_dp"
                         tools:text="SomeText"
                         android:textStyle="bold" />
