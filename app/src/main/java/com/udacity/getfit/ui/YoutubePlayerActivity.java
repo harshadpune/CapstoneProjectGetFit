@@ -1,5 +1,6 @@
 package com.udacity.getfit.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.getfit.R;
+import com.udacity.getfit.dao.FavoriteData;
 import com.udacity.getfit.utils.AppConstants;
 import com.udacity.getfit.utils.Utils;
 import java.util.ArrayList;
@@ -30,12 +32,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
     YouTubePlayer.OnInitializedListener onInitializedListener;
     private String videoId;
     DatabaseReference favoriteReference;
+    DatabaseReference favoriteRemoveReference;
     private Button btnFavorite;
     private FirebaseUser currentUser;
     private String favoriteKey =  "favorite";
     private ImageView ivFavorite;
     private boolean isAlreadyBookmarked = false;
-    private ArrayList<String> favoritesList;
+    private ArrayList<FavoriteData> favoritesList;
     private String videoName;
     private TextView tvFavorite;
 
@@ -54,19 +57,17 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                    if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()))){
-                        favoritesList = (ArrayList<String>) dataSnapshot1.getValue();
-                        for (int i=0; i<favoritesList.size(); i++) {
-                            if(favoritesList.get(i).equalsIgnoreCase(videoId)) {
+                    if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()))) {
+                        for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
+                            FavoriteData favoriteData = dataSnapshot2.getValue(FavoriteData.class);
+                            if(favoriteData.getVideoId().equalsIgnoreCase(videoId)){
                                 isAlreadyBookmarked = true;
                                 ivFavorite.setImageResource(R.drawable.star_selected);
-                                Log.d("YoutbeActivity", "--------Matched " + favoritesList.get(i));
+                                Log.d("YoutubePlayer","-------------- isAlreadyBookmarked true");
                             }
                         }
-
                     }
                 }
-
             }
 
             @Override
@@ -84,12 +85,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         ivFavorite = findViewById(R.id.ivFavorite);
         tvFavorite = findViewById(R.id.tvFavorite);
-
         favoriteReference = FirebaseDatabase.getInstance().getReference("favorites");
-
+        favoriteRemoveReference = FirebaseDatabase.getInstance().getReference("favorites");
         youtubePlayerView = findViewById(R.id.youtubePlayer);
         videoId =  getIntent().getStringExtra(AppConstants.VIDEO_ID);
         videoName =  getIntent().getStringExtra(AppConstants.VIDEO_NAME);
+        favoritesList = new ArrayList();
+
 
         if(!TextUtils.isEmpty(videoName))
             tvFavorite.setText(""+videoName);
@@ -117,15 +119,47 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
             case R.id.ivFavorite:
                 if(!isAlreadyBookmarked) {
                     ivFavorite.setImageResource(R.drawable.star_selected);
-
-                    if(favoritesList == null){
-                        favoritesList = new ArrayList();
-                    }
-                    favoritesList.add(videoId);
+                    FavoriteData favoriteData = new FavoriteData(videoName, videoId);
+                    favoritesList.add(favoriteData);
                     favoriteReference.child(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail())).setValue(favoritesList);
 
+                }else{
+                    ivFavorite.setImageResource(R.drawable.star_unselected);
+                    favoriteReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                                if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()))) {
+                                    for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
+                                        FavoriteData favoriteData = dataSnapshot2.getValue(FavoriteData.class);
+                                        if(favoriteData.getVideoId().equalsIgnoreCase(videoId)){
+                                            String removeKey = dataSnapshot2.getKey();
+                                            favoriteRemoveReference.child(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail())).child(removeKey).removeValue();
+                                            Toast.makeText(YoutubePlayerActivity.this, "Removed "+ removeKey, Toast.LENGTH_SHORT).show();
+                                            isAlreadyBookmarked = false;
+                                            deleteVideoAndUpdateAdapter(videoId);
+                                            Log.d("YoutubePlayer","-------------- isAlreadyBookmarked false");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
                 break;
         }
+    }
+
+
+    private void deleteVideoAndUpdateAdapter(String videoId) {
+        Intent intent = new Intent();
+        intent.putExtra(AppConstants.VIDEO_ID, videoId);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }
