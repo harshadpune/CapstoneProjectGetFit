@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8_dp"
+        android:layout_marginEnd="@dimen/margin_8_dp"
+        android:layout_marginStart="@dimen/margin_8_dp"
+        android:layout_marginTop="@dimen/margin_8_dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="@dimen/card_radius_12_dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="?selectableItemBackground">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+            <ImageView
+                android:id="@+id/ivDailyVideo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_150_dp"
+                android:scaleType="fitXY"/>
+            <ImageView
+                android:id="@+id/ivSemiTransparent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_150_dp"
+                android:background="@color/semiTransparent"/>
+
+            <ImageView
+                android:id="@+id/ivPlay"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/play_green"
+                android:visibility="gone"/>
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true" />
+
+           <!-- <TextView
+                android:id="@+id/tvDailyVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24_dp"
+                android:layout_marginRight="@dimen/margin_24_dp"
+                android:layout_marginTop="@dimen/margin_24_dp"
+                android:layout_marginBottom="@dimen/margin_8_dp"
+                android:textSize="14sp"
+                android:layout_below="@id/ivDailyVideo"
+                tools:text="Daily Video"
+                style="@style/CardTextViewStyle" />-->
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

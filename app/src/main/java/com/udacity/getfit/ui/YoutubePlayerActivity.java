@@ -43,7 +43,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_youtube_player);
         initComponents();
         setListeners();

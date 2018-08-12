@@ -15,5 +15,6 @@
     <string name="stop">Stop</string>
     <string name="logged_in">Your are logged in as : </string>
     <string name="someMotivationForYour">Some motivation for you!</string>
+    <string name="bookmarked_video">Your bookmarked video!</string>
 
 </resources>

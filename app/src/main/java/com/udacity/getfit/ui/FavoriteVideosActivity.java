@@ -3,16 +3,24 @@ package com.udacity.getfit.ui;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.getfit.R;
+import com.udacity.getfit.utils.FavoritesCardsRecyclerAdapter;
 
 import java.util.ArrayList;
 
 public class FavoriteVideosActivity extends AppCompatActivity {
+
+    private DatabaseReference favoriteReference;
+    private RecyclerView rvFavoritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,19 +29,26 @@ public class FavoriteVideosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_videos);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.favoriteVideos);
+        initComponents();
         setFavoriteData();
 
     }
 
+    private void initComponents() {
+        favoriteReference = FirebaseDatabase.getInstance().getReference("favorites");
+        rvFavoritesList = findViewById(R.id.rvFavoritesList);
+    }
+
+
     private void setFavoriteData() {
-       /* favoriteReference.addValueEventListener(new ValueEventListener() {
+        favoriteReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     Log.d("YoutbeActivity","--------"+dataSnapshot1.getKey());
                     if(dataSnapshot1.getKey().equalsIgnoreCase("harshadpune")){
-                        ArrayList<String> arrayList = (ArrayList<String>) dataSnapshot1.getValue();
-                        Log.d( "YoutbeActivity", "--------Matched "+ arrayList.get(0));
+                        ArrayList<String> favoriteList = (ArrayList<String>) dataSnapshot1.getValue();
+                        populateFavoriteData(favoriteList);
 
                     }
                 }
@@ -43,6 +58,12 @@ public class FavoriteVideosActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
     }
+
+    private void populateFavoriteData(ArrayList<String> favoriteList) {
+        rvFavoritesList.setAdapter(new FavoritesCardsRecyclerAdapter(this, favoriteList));
+    }
+
+
 }
