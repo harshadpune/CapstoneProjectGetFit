@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:paddingTop="@dimen/margin_10_dp"
+    android:paddingBottom="@dimen/margin_10_dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_24_dp"
+        android:paddingRight="@dimen/margin_24_dp">
+
+        <TextView
+            android:id="@+id/tvWorkoutName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Crunches"
+            android:textColor="@color/brown"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvWorkoutTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/brown"
+            android:fontFamily="sans-serif-medium"
+            android:layout_weight="1"
+            android:gravity="right"
+            tools:text="01:15"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_marginLeft="@dimen/margin_24_dp"
+        android:paddingRight="@dimen/margin_24_dp">
+
+        <TextView
+            android:id="@+id/tvWorkoutReps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            android:textColor="@color/brown"
+            android:fontFamily="sans-serif-medium"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            tools:text="x20" />
+
+        <TextView
+            android:id="@+id/tvWorkoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            android:textColor="@color/brown"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            tools:text="12-Aug-2018"/>
+    </LinearLayout>
+
+</LinearLayout>

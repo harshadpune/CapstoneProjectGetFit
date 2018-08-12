@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
 import com.udacity.getfit.databinding.ActivityWorkoutDetailsBinding;
@@ -19,6 +20,7 @@ public class WorkoutDetailsActivity extends FragmentActivity implements ViewPage
     private ActivityWorkoutDetailsBinding activityWorkoutDetailsBinding;
     private FitnessData.WorkoutInformation workoutInformation;
     private int selectedWorkout;
+    public DatabaseReference workoutReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class WorkoutDetailsActivity extends FragmentActivity implements ViewPage
         activityWorkoutDetailsBinding = DataBindingUtil.setContentView(this,R.layout.activity_workout_details);
         workoutInformation = (FitnessData.WorkoutInformation) getIntent().getSerializableExtra(AppConstants.INTENT_WORKOUT_INFO);
         selectedWorkout =  getIntent().getIntExtra(AppConstants.SELECTED_WORKOUT,0);
+        workoutReference = FirebaseDatabase.getInstance().getReference("workouts");
         setData();
     }
 

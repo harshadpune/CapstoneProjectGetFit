@@ -12,9 +12,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
+import com.udacity.getfit.dao.WorkoutData;
 import com.udacity.getfit.utils.AppConstants;
+import com.udacity.getfit.utils.Utils;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class FitnessDetailsFragment extends Fragment implements View.OnClickListener {
@@ -27,6 +38,8 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
     private Button btnStop;
     private Chronometer cmWorkoutTimer;
     private long lastPause = 0;
+    private WorkoutDetailsActivity mParentActivity;
+    private ArrayList<WorkoutData> workoutDataList;
 
     @Nullable
     @Override
@@ -39,9 +52,11 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
         cmWorkoutTimer = rootView.findViewById(R.id.cmWorkoutTimer);
         btnStart = rootView.findViewById(R.id.btnStart);
         btnStop = rootView.findViewById(R.id.btnStop);
-
+        mParentActivity = (WorkoutDetailsActivity) getActivity();
+        workoutDataList = new ArrayList();
         setData();
         setListeners();
+        checkIfWorkoutIsPresent();
         return rootView;
     }
 
@@ -79,6 +94,15 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
             case R.id.btnStop:
                 lastPause = SystemClock.elapsedRealtime();
                 cmWorkoutTimer.stop();
+                Date todaysDate = Calendar.getInstance().getTime();
+                SimpleDateFormat sf = new SimpleDateFormat("dd-MMM-yyyy");
+                if(workoutDataList.size() ==0) {
+                    ArrayList<WorkoutData> workoutDataList = new ArrayList();
+                }
+                mParentActivity.workoutReference.child(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail())).child("0");
+                WorkoutData workoutData = new WorkoutData(workoutList.workoutName, workoutList.workoutReps, cmWorkoutTimer.getText().toString(), sf.format(todaysDate) );
+                workoutDataList.add(workoutData);
+                mParentActivity.workoutReference.child(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail())).setValue(workoutDataList);
                 break;
         }
     }
@@ -89,5 +113,32 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
             ttobj.shutdown();
         }
         super.onPause();
+    }
+
+    private void checkIfWorkoutIsPresent() {
+
+        mParentActivity.workoutReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                    if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()))){
+                        for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
+                            WorkoutData workoutData = dataSnapshot2.getValue(WorkoutData.class);
+                            workoutDataList.add(workoutData);
+                        }
+/*
+                        for(int i=0; i< workoutDataList.size(); i++){
+                            Log.d("Fragment","-----------------------workoutName "+workoutDataList.get(i).getWorkoutName());
+                        }*/
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
