@@ -64,6 +64,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
                                 isAlreadyBookmarked = true;
                                 ivFavorite.setImageResource(R.drawable.star_selected);
                                 Log.d("YoutubePlayer","-------------- isAlreadyBookmarked true");
+                                favoriteReference.removeEventListener(this);
                             }
                         }
                     }
@@ -125,6 +126,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
 
                 }else{
                     ivFavorite.setImageResource(R.drawable.star_unselected);
+                    isAlreadyBookmarked = false;
                     favoriteReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -136,9 +138,9 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
                                             String removeKey = dataSnapshot2.getKey();
                                             favoriteRemoveReference.child(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail())).child(removeKey).removeValue();
                                             Toast.makeText(YoutubePlayerActivity.this, "Removed "+ removeKey, Toast.LENGTH_SHORT).show();
-                                            isAlreadyBookmarked = false;
                                             deleteVideoAndUpdateAdapter(videoId);
                                             Log.d("YoutubePlayer","-------------- isAlreadyBookmarked false");
+                                            favoriteReference.removeEventListener(this);
                                         }
                                     }
                                 }
