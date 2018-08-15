@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<android.support.v4.widget.NestedScrollView
+<!--<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
@@ -12,7 +12,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     android:background="@drawable/login_screen"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true">-->
 
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="fitStart"
-        android:src="@drawable/login_screen" />
+        android:background="@drawable/login_screen" />
 
     <ImageView
         android:id="@+id/transOverlay"
@@ -142,18 +142,22 @@
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/height_40_dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:textColor="@color/blue"
+            android:background="@color/white"/>
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/height_40_dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/login" />
+            android:text="@string/login"
+            android:textColor="@color/blue"
+            android:background="@color/white"/>
     </LinearLayout>
 
     <LinearLayout
@@ -164,7 +168,8 @@
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:paddingLeft="@dimen/margin_10_dp"
+        android:paddingRight="@dimen/margin_10_dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.346"
         app:layout_constraintStart_toStartOf="parent"
@@ -172,21 +177,26 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btnGoogle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_72_dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/margin_10_dp"
             android:text="@string/google" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/btnFacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_10_dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/margin_10_dp"
+            android:paddingBottom="@dimen/margin_10_dp"/>
     </LinearLayout>
 
 
 
 </android.support.constraint.ConstraintLayout>
 
-</android.support.v4.widget.NestedScrollView>
+<!--</ScrollView>-->
 
 </layout>
