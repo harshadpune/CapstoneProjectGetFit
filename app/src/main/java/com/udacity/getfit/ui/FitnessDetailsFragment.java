@@ -96,10 +96,9 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
                 cmWorkoutTimer.stop();
                 Date todaysDate = Calendar.getInstance().getTime();
                 SimpleDateFormat sf = new SimpleDateFormat("dd-MMM-yyyy");
-                if(workoutDataList.size() ==0) {
+               /* if(workoutDataList.size() ==0) {
                     ArrayList<WorkoutData> workoutDataList = new ArrayList();
-                }
-                mParentActivity.workoutReference.child(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail())).child("0");
+                }*/
                 WorkoutData workoutData = new WorkoutData(workoutList.workoutName, workoutList.workoutReps, cmWorkoutTimer.getText().toString(), sf.format(todaysDate) );
                 workoutDataList.add(workoutData);
                 mParentActivity.workoutReference.child(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail())).setValue(workoutDataList);

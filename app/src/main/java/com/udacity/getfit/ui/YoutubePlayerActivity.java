@@ -60,6 +60,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
                     if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()))) {
                         for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
                             FavoriteData favoriteData = dataSnapshot2.getValue(FavoriteData.class);
+                            favoritesList.add(favoriteData);
                             if(favoriteData.getVideoId().equalsIgnoreCase(videoId)){
                                 isAlreadyBookmarked = true;
                                 ivFavorite.setImageResource(R.drawable.star_selected);

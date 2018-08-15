@@ -19,7 +19,10 @@ import com.udacity.getfit.R;
 import com.udacity.getfit.dao.WorkoutData;
 import com.udacity.getfit.database.AppDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Implementation of App Widget functionality.
@@ -52,20 +55,24 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
 
         final AppDatabase mDb = AppDatabase.getInstance(context);
         final ArrayList<WorkoutData> workoutDataList = new ArrayList();
+        final Date todaysDate = Calendar.getInstance().getTime();
+        final SimpleDateFormat sf = new SimpleDateFormat("dd-MMM-yyyy");
         DatabaseReference workoutReferece = FirebaseDatabase.getInstance().getReference("workouts");
         workoutReferece.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     if(dataSnapshot1.getKey().equalsIgnoreCase(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail()))){
+                        workoutDataList.clear();
                         for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
                             WorkoutData workoutData = dataSnapshot2.getValue(WorkoutData.class);
-                            workoutDataList.add(workoutData);
+                            if(workoutData.getDate().equalsIgnoreCase(sf.format(todaysDate)))
+                                workoutDataList.add(workoutData);
                         }
 
-                        for(int i=0; i< workoutDataList.size(); i++){
-                            Log.d("Fragment","------workoutName "+workoutDataList.get(i).getWorkoutName());
-                        }
+                        /*for(int i=0; i< workoutDataList.size(); i++){
+                            Log.d("Widget","------workoutName "+workoutDataList.get(i).getWorkoutName());
+                        }*/
 
                         for (int appWidgetId : appWidgetIds) {
                             updateAppWidget(context, appWidgetManager, appWidgetId, workoutDataList);

@@ -29,11 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_150_dp"
                 android:scaleType="fitXY"/>
-            <ImageView
+          <!--  <ImageView
                 android:id="@+id/ivSemiTransparent"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_150_dp"
-                android:background="@color/semiTransparent"/>
+                android:background="@color/semiTransparent"/>-->
 
             <ImageView
                 android:id="@+id/ivPlay"
