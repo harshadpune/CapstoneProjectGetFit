@@ -33,6 +33,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract ReportsDao reportsDao();
+//    public abstract ReportsDao reportsDao();
 }
 

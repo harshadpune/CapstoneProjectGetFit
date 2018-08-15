@@ -17,6 +17,8 @@
     <string name="someMotivationForYour">Some motivation for you!</string>
     <string name="bookmarked_video">Your bookmarked video!</string>
     <string name="appwidget_text">EXAMPLE</string>
+    <string name="workoutEmpty">Don\'t forget your workout today!!</string>
     <string name="add_widget">Add widget</string>
+    <string name="reps">x</string>
 
 </resources>

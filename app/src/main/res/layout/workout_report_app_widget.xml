@@ -13,18 +13,16 @@
         tools:listitem="@layout/reports_list_item">
 
     </ListView>
-    <!--<TextView
-        android:id="@+id/appwidget_text"
+    <TextView
+        android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
+        android:contentDescription="@string/workoutEmpty"
+        android:text="@string/workoutEmpty"
+        android:textColor="@color/brown"
         android:textSize="24sp"
         android:textStyle="bold|italic" />
--->
 </RelativeLayout>
