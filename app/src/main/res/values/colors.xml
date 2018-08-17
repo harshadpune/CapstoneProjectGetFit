@@ -7,8 +7,10 @@
     <color name="colorPrimaryDark">#000000</color>
     <!--<color name="colorAccent">#FF0266</color>-->
     <color name="colorAccent">#76FF03</color>
+    <color name="colorAccentTrans">#CC76FF03</color>
     <color name="semiTransparent">#80000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="dark_grey">#A9A9A9</color>
     <color name="red">#FF0000</color>
     <color name="black">#000000</color>
     <color name="brown">#795548</color>

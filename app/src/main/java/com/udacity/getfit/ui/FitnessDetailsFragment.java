@@ -1,5 +1,8 @@
 package com.udacity.getfit.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +26,8 @@ import com.udacity.getfit.dao.FitnessData;
 import com.udacity.getfit.dao.WorkoutData;
 import com.udacity.getfit.utils.AppConstants;
 import com.udacity.getfit.utils.Utils;
+import com.udacity.getfit.utils.WorkoutReportAppWidget;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +46,7 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
     private long lastPause = 0;
     private WorkoutDetailsActivity mParentActivity;
     private ArrayList<WorkoutData> workoutDataList;
+    private LinearLayout llCompleteContainer;
 
     @Nullable
     @Override
@@ -52,6 +59,7 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
         cmWorkoutTimer = rootView.findViewById(R.id.cmWorkoutTimer);
         btnStart = rootView.findViewById(R.id.btnStart);
         btnStop = rootView.findViewById(R.id.btnStop);
+        llCompleteContainer = rootView.findViewById(R.id.llCompleteContainer);
         mParentActivity = (WorkoutDetailsActivity) getActivity();
         workoutDataList = new ArrayList();
         setData();
@@ -83,6 +91,8 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
         switch (view.getId()){
 
             case R.id.btnStart:
+                btnStop.setEnabled(true);
+                btnStart.setEnabled(false);
                 ttobj.speak(workoutList.workoutDetails, TextToSpeech.QUEUE_FLUSH, null);
                 if(lastPause == 0)
                     cmWorkoutTimer.setBase(SystemClock.elapsedRealtime());
@@ -92,6 +102,10 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.btnStop:
+                btnStop.setEnabled(false);
+                btnStart.setVisibility(View.INVISIBLE);
+                btnStop.setVisibility(View.INVISIBLE);
+                llCompleteContainer.setVisibility(View.VISIBLE);
                 lastPause = SystemClock.elapsedRealtime();
                 cmWorkoutTimer.stop();
                 Date todaysDate = Calendar.getInstance().getTime();
@@ -102,8 +116,20 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
                 WorkoutData workoutData = new WorkoutData(workoutList.workoutName, workoutList.workoutReps, cmWorkoutTimer.getText().toString(), sf.format(todaysDate) );
                 workoutDataList.add(workoutData);
                 mParentActivity.workoutReference.child(Utils.getCurrentUserForDB(""+ FirebaseAuth.getInstance().getCurrentUser().getEmail())).setValue(workoutDataList);
+                updateAppWidgets();
                 break;
         }
+    }
+
+    private void updateAppWidgets() {
+
+        Intent intent = new Intent(mParentActivity, WorkoutReportAppWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        int[] ids = AppWidgetManager.getInstance(mParentActivity).getAppWidgetIds(new ComponentName(mParentActivity, WorkoutReportAppWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        getActivity().sendBroadcast(intent);
     }
 
     public void onPause(){
@@ -125,10 +151,6 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
                             WorkoutData workoutData = dataSnapshot2.getValue(WorkoutData.class);
                             workoutDataList.add(workoutData);
                         }
-/*
-                        for(int i=0; i< workoutDataList.size(); i++){
-                            Log.d("Fragment","-----------------------workoutName "+workoutDataList.get(i).getWorkoutName());
-                        }*/
                     }
                 }
 

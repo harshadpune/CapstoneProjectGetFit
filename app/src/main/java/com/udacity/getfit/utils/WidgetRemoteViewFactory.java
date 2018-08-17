@@ -2,6 +2,7 @@ package com.udacity.getfit.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.google.gson.Gson;
@@ -21,17 +22,17 @@ class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
         mDb = AppDatabase.getInstance(context);
         String name = intent.getStringExtra(AppConstants.INTENT_WORKOUT_LIST);
         Gson gson = new Gson();
-        workoutDataList = (ArrayList<WorkoutData>) gson.fromJson(name, new TypeToken<ArrayList<WorkoutData>>(){}.getType());
+        workoutDataList = gson.fromJson(name, new TypeToken<ArrayList<WorkoutData>>() {}.getType());
     }
 
     @Override
     public void onCreate() {
-//            onUpdateWidget();
+
     }
 
     @Override
     public void onDataSetChanged() {
-//            onUpdateWidget();
+
     }
 
     @Override

@@ -62,4 +62,11 @@
         <item name="android:textSize">@dimen/text_size_24_sp</item>
     </style>
 
+    <style name="AppTheme.Buttons" parent="@android:style/Widget.Button">
+
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:textColor">@drawable/btn_text_selector</item>
+    </style>
+
 </resources>

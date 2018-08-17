@@ -5,23 +5,38 @@
     android:background="@color/white"
     android:padding="@dimen/widget_margin">
 
+    <TextView
+        android:id="@+id/tvTodaysWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_todays_workout"
+        style="@style/CardTextViewStyle"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:paddingTop="@dimen/margin_5_dp"
+        android:paddingBottom="@dimen/margin_5_dp"
+        android:background="@color/appBackground"/>
 
     <ListView
         android:id="@+id/lvReports"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/tvTodaysWorkout"
         tools:listitem="@layout/reports_list_item">
 
     </ListView>
     <TextView
         android:id="@+id/empty"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
+        android:gravity="center"
         android:contentDescription="@string/workoutEmpty"
         android:text="@string/workoutEmpty"
+        android:layout_marginLeft="@dimen/margin_5_dp"
+        android:layout_marginRight="@dimen/margin_5_dp"
         android:textColor="@color/brown"
         android:textSize="24sp"
         android:textStyle="bold|italic" />

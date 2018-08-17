@@ -121,7 +121,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
-            android:gravity="left"
+            android:gravity="center"
             android:textColor="@color/red"
             tools:text="Some Error!!" />
     </LinearLayout>
@@ -131,8 +131,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,8 +146,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/register"
-            android:textColor="@color/blue"
-            android:background="@color/white"/>
+            android:enabled="false"
+            android:background="@drawable/btn_selector"/>
 
         <Button
             android:id="@+id/btnLogin"
@@ -156,8 +156,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/login"
-            android:textColor="@color/blue"
-            android:background="@color/white"/>
+            android:enabled="false"
+            android:background="@drawable/btn_selector"/>
     </LinearLayout>
 
     <LinearLayout
@@ -165,7 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/margin_10_dp"

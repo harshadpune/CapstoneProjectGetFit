@@ -1,11 +1,15 @@
 package com.udacity.getfit.utils;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,8 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.WorkoutData;
-import com.udacity.getfit.database.AppDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,10 +32,22 @@ import java.util.Date;
 public class WorkoutReportAppWidget extends AppWidgetProvider {
 
 
+    private static final String ACTION_SCHEDULED_UPDATE = "com.udacity.getfit.SCHEDULED_UPDATE";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(ACTION_SCHEDULED_UPDATE)) {
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            int[] ids = manager.getAppWidgetIds(new ComponentName(context, WorkoutReportAppWidget.class));
+            onUpdate(context, manager, ids);
+        }
+        super.onReceive(context, intent);
+    }
+
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId, ArrayList<WorkoutData> workoutDataList) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.workout_report_app_widget);
         Intent intent = new Intent(context.getApplicationContext(), WidgetService.class);
@@ -52,12 +66,13 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        scheduleNextUpdate(context);
 
-        final AppDatabase mDb = AppDatabase.getInstance(context);
+
         final ArrayList<WorkoutData> workoutDataList = new ArrayList();
         final Date todaysDate = Calendar.getInstance().getTime();
         final SimpleDateFormat sf = new SimpleDateFormat("dd-MMM-yyyy");
-        DatabaseReference workoutReferece = FirebaseDatabase.getInstance().getReference("workouts");
+        final DatabaseReference workoutReferece = FirebaseDatabase.getInstance().getReference("workouts");
         workoutReferece.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,13 +85,14 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
                                 workoutDataList.add(workoutData);
                         }
 
-                        /*for(int i=0; i< workoutDataList.size(); i++){
+                       /* for(int i=0; i< workoutDataList.size(); i++){
                             Log.d("Widget","------workoutName "+workoutDataList.get(i).getWorkoutName());
                         }*/
 
                         for (int appWidgetId : appWidgetIds) {
                             updateAppWidget(context, appWidgetManager, appWidgetId, workoutDataList);
                         }
+                        workoutReferece.removeEventListener(this);
                     }
                 }
             }
@@ -96,6 +112,26 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+
+    private static void scheduleNextUpdate(Context context) {
+        AlarmManager alarmManager =
+                (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, WorkoutReportAppWidget.class);
+        intent.setAction(ACTION_SCHEDULED_UPDATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        Calendar midnight = Calendar.getInstance();
+        midnight.set(Calendar.HOUR_OF_DAY, 0);
+        midnight.set(Calendar.MINUTE, 0);
+        midnight.set(Calendar.SECOND, 1);
+        midnight.set(Calendar.MILLISECOND, 0);
+        midnight.add(Calendar.DAY_OF_YEAR, 1);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), pendingIntent);
+        }
     }
 }
 

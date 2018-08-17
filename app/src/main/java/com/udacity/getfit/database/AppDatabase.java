@@ -12,7 +12,7 @@ import com.udacity.getfit.dao.WorkoutData;
  * Created by HARSHAD on 15/08/2018.
  */
 
-@Database(entities = {WorkoutData.class}, version = 1, exportSchema = false)
+//@Database(entities = {WorkoutData.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase sInstance;

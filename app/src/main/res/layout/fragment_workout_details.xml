@@ -12,7 +12,10 @@
 
  <android.support.constraint.ConstraintLayout
      android:layout_width="match_parent"
-     android:layout_height="match_parent">
+     android:layout_height="match_parent"
+     android:paddingBottom="@dimen/height_40_dp">
+
+
 
      <TextView
          android:id="@+id/tvWorkoutName"
@@ -21,7 +24,7 @@
          style="@style/CardTextViewStyle"
          android:layout_marginEnd="8dp"
          android:layout_marginStart="8dp"
-         android:layout_marginTop="@dimen/height_150_dp"
+         android:layout_marginTop="@dimen/height_200_dp"
          tools:text="Heel Touch"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent"
@@ -63,22 +66,68 @@
      <Button
          android:id="@+id/btnStart"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_height="@dimen/height_40_dp"
          android:layout_marginStart="40dp"
          android:layout_marginTop="32dp"
          android:text="@string/start"
+         style="@style/AppTheme.Buttons"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/tvWorkoutDetails" />
 
      <Button
          android:id="@+id/btnStop"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_height="@dimen/height_40_dp"
          android:layout_marginEnd="40dp"
          android:text="@string/stop"
+         style="@style/AppTheme.Buttons"
          app:layout_constraintBaseline_toBaselineOf="@+id/btnStart"
-         app:layout_constraintEnd_toEndOf="parent" />
- </android.support.constraint.ConstraintLayout>
+         app:layout_constraintEnd_toEndOf="parent"
+         android:enabled="false"/>
 
-     </android.support.v4.widget.NestedScrollView>
+     <TextView
+         android:id="@+id/tvReps"
+         style="@style/CardTextViewStyle"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="8dp"
+         android:layout_marginStart="8dp"
+         tools:text="x25"
+         android:textSize="32dp"
+         app:layout_constraintBaseline_toBaselineOf="@+id/tvWorkoutName"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toEndOf="@+id/tvWorkoutName" />
+
+     <LinearLayout
+         android:id="@+id/llCompleteContainer"
+         android:layout_width="match_parent"
+         android:layout_height="51dp"
+         android:layout_marginBottom="8dp"
+         android:layout_marginEnd="8dp"
+         android:layout_marginStart="8dp"
+         android:layout_marginTop="@dimen/height_40_dp"
+         android:background="@color/black"
+         android:gravity="center"
+         android:orientation="horizontal"
+         android:padding="@dimen/margin_5_dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/btnStart"
+         android:visibility="gone">
+
+         <TextView
+             style="@style/CardTextViewStyle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Comleted " />
+
+         <ImageView
+             android:layout_width="@dimen/height_40_dp"
+             android:layout_height="@dimen/height_40_dp"
+             android:layout_marginLeft="@dimen/margin_5_dp"
+             android:background="@drawable/tick_icon" />
+     </LinearLayout>
+</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>
 </layout>
