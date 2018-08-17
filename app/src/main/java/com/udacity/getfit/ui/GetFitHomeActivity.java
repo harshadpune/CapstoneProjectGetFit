@@ -86,6 +86,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
                 videoId = fitnessData.get(0).dailyVideo;
                 videoName = ""+fitnessData.get(0).dailyVideoName;
                 tvDailyVideo.setText(videoName);
+                cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
             }
 
             @Override

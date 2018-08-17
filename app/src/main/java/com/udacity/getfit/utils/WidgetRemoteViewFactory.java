@@ -9,17 +9,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.WorkoutData;
-import com.udacity.getfit.database.AppDatabase;
 import java.util.ArrayList;
 
 class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private final Context context;
-    private final AppDatabase mDb;
     private ArrayList<WorkoutData> workoutDataList = new ArrayList();
 
     public WidgetRemoteViewFactory(final Context context, Intent intent) {
         this.context = context;
-        mDb = AppDatabase.getInstance(context);
         String name = intent.getStringExtra(AppConstants.INTENT_WORKOUT_LIST);
         Gson gson = new Gson();
         workoutDataList = gson.fromJson(name, new TypeToken<ArrayList<WorkoutData>>() {}.getType());
@@ -49,9 +46,14 @@ class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),R.layout.reports_list_item);
         remoteView.setTextViewText(R.id.tvWorkoutName, workoutDataList.get(position).getWorkoutName());
-        remoteView.setTextViewText(R.id.tvWorkoutReps, context.getString(R.string.reps)+""+ workoutDataList.get(position).getWorkoutReps());
         remoteView.setTextViewText(R.id.tvWorkoutTime, workoutDataList.get(position).getTime());
+        remoteView.setTextViewText(R.id.tvWorkoutReps, context.getString(R.string.reps)+""+ workoutDataList.get(position).getWorkoutReps());
         remoteView.setTextViewText(R.id.tvWorkoutDate, workoutDataList.get(position).getDate());
+
+        remoteView.setContentDescription(R.id.tvWorkoutName, workoutDataList.get(position).getWorkoutName()+" "+context.getString(R.string.cd_completed_in));
+        remoteView.setContentDescription(R.id.tvWorkoutTime,  workoutDataList.get(position).getTime());
+        remoteView.setContentDescription(R.id.tvWorkoutReps, context.getString(R.string.cd_reps)+" "+ workoutDataList.get(position).getWorkoutReps() + " "+context.getString(R.string.cd_on));
+        remoteView.setContentDescription(R.id.tvWorkoutDate,  workoutDataList.get(position).getDate());
         return remoteView;
     }
 

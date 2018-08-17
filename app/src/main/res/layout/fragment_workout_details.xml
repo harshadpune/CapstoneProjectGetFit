@@ -126,7 +126,8 @@
              android:layout_width="@dimen/height_40_dp"
              android:layout_height="@dimen/height_40_dp"
              android:layout_marginLeft="@dimen/margin_5_dp"
-             android:background="@drawable/tick_icon" />
+             android:background="@drawable/tick_icon"
+             android:contentDescription="@string/cd_tick_mark"/>
      </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

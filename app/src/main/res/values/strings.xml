@@ -22,4 +22,13 @@
     <string name="reps">x</string>
     <string name="widget_todays_workout">Todays workout report</string>
 
+    <!-- Content Descriptions-->
+    <string name="cd_google_signin">Sing in by your Google account</string>
+    <string name="cd_facebook_signin">Sing in by your Facebook account</string>
+    <string name="cd_video_card">video card. Play your daily motivational video.</string>
+    <string name="cd_reps">Repetitions</string>
+    <string name="cd_tick_mark">Green tick</string>
+    <string name="cd_completed_in">completed in</string>
+    <string name="cd_on">on</string>
+
 </resources>

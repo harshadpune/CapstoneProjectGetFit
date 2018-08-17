@@ -37,8 +37,13 @@ public class ReportsRecyclerAdapter extends RecyclerView.Adapter<ReportsRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvWorkoutName.setText(workoutDataList.get(position).getWorkoutName());
         holder.tvWorkoutTime.setText(workoutDataList.get(position).getTime());
-        holder.tvWorkoutReps.setText(workoutDataList.get(position).getWorkoutReps());
+        holder.tvWorkoutReps.setText(context.getString(R.string.reps)+""+workoutDataList.get(position).getWorkoutReps());
         holder.tvWorkoutDate.setText(workoutDataList.get(position).getDate());
+
+        holder.tvWorkoutName.setContentDescription(workoutDataList.get(position).getWorkoutName()+" "+context.getString(R.string.cd_completed_in));
+        holder.tvWorkoutTime.setContentDescription(workoutDataList.get(position).getTime());
+        holder.tvWorkoutReps.setContentDescription(context.getString(R.string.cd_reps)+" "+ workoutDataList.get(position).getWorkoutReps() + " "+context.getString(R.string.cd_on));
+        holder.tvWorkoutDate.setContentDescription(workoutDataList.get(position).getDate());
     }
 
 

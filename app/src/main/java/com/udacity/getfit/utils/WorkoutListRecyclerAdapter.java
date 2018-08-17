@@ -34,7 +34,8 @@ public class WorkoutListRecyclerAdapter extends RecyclerView.Adapter<WorkoutList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.tvWorkoutName.setText(""+workoutInformation.workoutLists.get(position).workoutName);
-            holder.tvWorkoutReps.setText(""+workoutInformation.workoutLists.get(position).workoutReps);
+            holder.tvWorkoutReps.setText("x "+workoutInformation.workoutLists.get(position).workoutReps);
+            holder.tvWorkoutReps.setContentDescription(context.getString(R.string.cd_reps)+" "+workoutInformation.workoutLists.get(position).workoutReps);
     }
 
     @Override

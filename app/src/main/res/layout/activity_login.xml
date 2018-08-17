@@ -181,7 +181,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="@dimen/margin_10_dp"
-            android:text="@string/google" />
+            android:text="@string/google"
+            android:contentDescription="@string/cd_google_signin"/>
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/btnFacebook"
@@ -190,7 +191,8 @@
             android:paddingTop="@dimen/margin_10_dp"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/margin_10_dp"
-            android:paddingBottom="@dimen/margin_10_dp"/>
+            android:paddingBottom="@dimen/margin_10_dp"
+            android:contentDescription="@string/cd_facebook_signin"/>
     </LinearLayout>
 
 

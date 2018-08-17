@@ -47,6 +47,7 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
     private WorkoutDetailsActivity mParentActivity;
     private ArrayList<WorkoutData> workoutDataList;
     private LinearLayout llCompleteContainer;
+    private TextView tvReps;
 
     @Nullable
     @Override
@@ -59,6 +60,7 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
         cmWorkoutTimer = rootView.findViewById(R.id.cmWorkoutTimer);
         btnStart = rootView.findViewById(R.id.btnStart);
         btnStop = rootView.findViewById(R.id.btnStop);
+        tvReps = rootView.findViewById(R.id.tvReps);
         llCompleteContainer = rootView.findViewById(R.id.llCompleteContainer);
         mParentActivity = (WorkoutDetailsActivity) getActivity();
         workoutDataList = new ArrayList();
@@ -76,6 +78,8 @@ public class FitnessDetailsFragment extends Fragment implements View.OnClickList
     private void setData() {
         tvWorkoutName.setText(workoutList.workoutName);
         tvWorkoutDetails.setText(workoutList.workoutDetails);
+        tvReps.setText(getString(R.string.reps)+""+workoutList.workoutReps);
+        tvReps.setContentDescription(getString(R.string.cd_reps)+" "+workoutList.workoutReps);
         ttobj=new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
