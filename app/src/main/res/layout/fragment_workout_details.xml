@@ -16,19 +16,19 @@
      android:paddingBottom="@dimen/height_40_dp">
 
 
-
      <TextView
          android:id="@+id/tvWorkoutName"
+         style="@style/CardTextViewStyle"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         style="@style/CardTextViewStyle"
-         android:layout_marginEnd="8dp"
-         android:layout_marginStart="8dp"
+         android:layout_marginEnd="16dp"
+         android:layout_marginStart="16dp"
          android:layout_marginTop="@dimen/height_200_dp"
-         tools:text="Heel Touch"
-         app:layout_constraintEnd_toEndOf="parent"
+         android:textSize="20sp"
+         app:layout_constraintEnd_toStartOf="@+id/tvReps"
          app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />
+         app:layout_constraintTop_toTopOf="parent"
+         tools:text="Heel Touch" />
 
      <Chronometer
          android:id="@+id/cmWorkoutTimer"
@@ -91,12 +91,10 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginEnd="8dp"
-         android:layout_marginStart="8dp"
-         tools:text="x25"
          android:textSize="32dp"
          app:layout_constraintBaseline_toBaselineOf="@+id/tvWorkoutName"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toEndOf="@+id/tvWorkoutName" />
+         tools:text="x25" />
 
      <LinearLayout
          android:id="@+id/llCompleteContainer"
@@ -105,16 +103,16 @@
          android:layout_marginBottom="8dp"
          android:layout_marginEnd="8dp"
          android:layout_marginStart="8dp"
-         android:layout_marginTop="@dimen/height_40_dp"
+         android:layout_marginTop="50dp"
          android:background="@color/black"
          android:gravity="center"
          android:orientation="horizontal"
          android:padding="@dimen/margin_5_dp"
+         android:visibility="gone"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/btnStart"
-         android:visibility="gone">
+         app:layout_constraintTop_toBottomOf="@+id/tvWorkoutDetails">
 
          <TextView
              style="@style/CardTextViewStyle"
@@ -127,7 +125,7 @@
              android:layout_height="@dimen/height_40_dp"
              android:layout_marginLeft="@dimen/margin_5_dp"
              android:background="@drawable/tick_icon"
-             android:contentDescription="@string/cd_tick_mark"/>
+             android:contentDescription="@string/cd_tick_mark" />
      </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
