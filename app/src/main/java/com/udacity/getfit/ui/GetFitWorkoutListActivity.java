@@ -3,6 +3,7 @@ package com.udacity.getfit.ui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class GetFitWorkoutListActivity extends AppCompatActivity {
     private RecyclerView rvWorkoutList;
     private ImageView ivWorkout;
     private TextView tvWorkoutType;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,9 @@ public class GetFitWorkoutListActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_get_fit_workout_list);
         initComponents();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setData();
     }
 
@@ -32,6 +37,8 @@ public class GetFitWorkoutListActivity extends AppCompatActivity {
         rvWorkoutList = findViewById(R.id.rvWorkoutList);
         ivWorkout = findViewById(R.id.ivWorkout);
         tvWorkoutType = findViewById(R.id.tvWorkoutType);
+        toolbar = findViewById(R.id.toolbar);
+
     }
 
     private void setData() {

@@ -32,19 +32,19 @@
 
      <Chronometer
          android:id="@+id/cmWorkoutTimer"
+         style="@style/CardTextViewStyle"
          android:layout_width="100dp"
          android:layout_height="100dp"
-         android:gravity="center"
          android:layout_marginEnd="50dp"
-         android:layout_marginTop="50dp"
-         style="@style/CardTextViewStyle"
-         android:padding="@dimen/margin_20_dp"
-         android:textSize="20sp"
+         android:layout_marginTop="32dp"
          android:background="@drawable/timer_round_shape"
+         android:gravity="center"
+         android:padding="@dimen/margin_20_dp"
          android:textColor="@color/colorAccent"
-         tools:text="00:00"
+         android:textSize="20sp"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />
+         app:layout_constraintTop_toTopOf="parent"
+         tools:text="00:00" />
 
      <TextView
          android:id="@+id/tvWorkoutDetails"
@@ -65,12 +65,12 @@
 
      <Button
          android:id="@+id/btnStart"
+         style="@style/AppTheme.Buttons"
          android:layout_width="wrap_content"
          android:layout_height="@dimen/height_40_dp"
          android:layout_marginStart="40dp"
-         android:layout_marginTop="32dp"
+         android:layout_marginTop="50dp"
          android:text="@string/start"
-         style="@style/AppTheme.Buttons"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/tvWorkoutDetails" />
 

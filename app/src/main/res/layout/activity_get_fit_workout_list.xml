@@ -41,7 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:paddingTop="@dimen/margin_10_dp"
+                    android:paddingBottom="@dimen/margin_10_dp">
 
                     <TextView
                         android:id="@+id/tvWorkoutType"
@@ -51,8 +52,6 @@
                         android:lineSpacingMultiplier="0.9"
                         android:textColor="#fff"
                         android:textSize="18sp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="@dimen/margin_20_dp"
                         tools:text="SomeText"
                         android:textStyle="bold" />
 
