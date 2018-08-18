@@ -1,32 +1,37 @@
 package com.udacity.getfit.ui;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.udacity.getfit.R;
 import com.udacity.getfit.dao.FitnessData;
+import com.udacity.getfit.dao.WorkoutMaster;
+import com.udacity.getfit.database.AppDatabase;
+import com.udacity.getfit.database.AppExcecutors;
 import com.udacity.getfit.network.RetrofitAPIInterface;
 import com.udacity.getfit.network.RetrofitApiClient;
 import com.udacity.getfit.utils.AppConstants;
 import com.udacity.getfit.utils.FitnessCardsRecyclerAdapter;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,11 +48,12 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
     private String videoId = "";
     private TextView tvDailyVideo;
     private String videoName = "";
+    private AppDatabase mDb;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_get_fit_home);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getResources().getString(R.string.workoutCategories));
@@ -61,7 +67,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initComponents() {
-
+        gson = new Gson();
         ivDailyVideo = findViewById(R.id.ivDailyVideo);
         ivPlay = findViewById(R.id.ivPlay);
         pbLoading = findViewById(R.id.pbLoading);
@@ -70,6 +76,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
         tvDailyVideo = findViewById(R.id.tvDailyVideo);
         cvFitness = findViewById(R.id.cvFitness);
         tvUserName.setText(getString(R.string.logged_in)+" "+FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        mDb = AppDatabase.getInstance(this);
     }
 
     private void loadFitnessData() {
@@ -87,14 +94,108 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
                 videoName = ""+fitnessData.get(0).dailyVideoName;
                 tvDailyVideo.setText(videoName);
                 cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
+                setFitnessDataInDb(fitnessData.get(0));
             }
 
             @Override
             public void onFailure(Call<List<FitnessData>> call, Throwable t) {
-                Toast.makeText(GetFitHomeActivity.this, "Failure!!", Toast.LENGTH_SHORT).show();
                 fitnessData.cancel();
+                loadFitnessDataFromDb();
             }
         });
+    }
+
+    /**
+     * Refresh Database details everytime application is launched. This data will be used when device is launched when no Internet connection is present.
+     * @param fitnessData
+     */
+    private void setFitnessDataInDb(FitnessData fitnessData) {
+        String workoutsList = gson.toJson(fitnessData);
+        final WorkoutMaster workoutMasterNew = new WorkoutMaster();
+        workoutMasterNew.setWorkoutMasterData(workoutsList);
+        AppExcecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.workoutsDao().deleteAllData();
+            }
+        });
+
+
+        final LiveData<WorkoutMaster> workoutData = mDb.workoutsDao().loadAllData();
+        workoutData.observe(this, new Observer<WorkoutMaster>() {
+            @Override
+            public void onChanged(@Nullable final WorkoutMaster workoutMaster) {
+                workoutData.removeObserver(this);
+                if(workoutMaster !=null){
+                   deleteAllData();
+                }
+                insertMasterData(workoutMasterNew);
+            }
+        });
+
+    }
+
+    /**
+     * Delete previous records of workout details before adding the newly received data
+     */
+    private void deleteAllData(){
+        AppExcecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("GetFitHomeActivity", "----------Deleting All Data");
+                mDb.workoutsDao().deleteAllData();
+            }
+        });
+    }
+
+    /**
+     * Add master data of workout in database.
+     * @param workoutMasterNew
+     */
+    private void insertMasterData(final WorkoutMaster workoutMasterNew){
+        AppExcecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("GetFitHomeActivity", "----------Adding master data First time");
+                mDb.workoutsDao().insertWorkoutMaster(workoutMasterNew);
+            }
+        });
+    }
+
+    /**
+     * If no internet connection is there then load the data from database.
+     */
+    private void loadFitnessDataFromDb() {
+        final LiveData<WorkoutMaster> workoutData = mDb.workoutsDao().loadAllData();
+        workoutData.observe(this, new Observer<WorkoutMaster>() {
+            @Override
+            public void onChanged(@Nullable final WorkoutMaster workoutMaster) {
+                workoutData.removeObserver(this);
+
+                FitnessData fitnessData = gson.fromJson(workoutMaster.getWorkoutMasterData(), new TypeToken<FitnessData>() {}.getType());
+                if(fitnessData !=null){
+                    Toast.makeText(GetFitHomeActivity.this, "No network. Showing Cached Data.", Toast.LENGTH_SHORT).show();
+                    Log.d("GetFitHomeActivity", "------------------Data Already Present. Getting it");
+                    loadDataInUI(fitnessData);
+                }else{
+                    Log.d("GetFitHomeActivity", "------------------Data Not Present.");
+                }
+
+            }
+        });
+    }
+
+    /**
+     * Load data received from database in UI
+     * @param fitnessData
+     */
+    private void loadDataInUI(FitnessData fitnessData) {
+        loadVideoThumbnail(fitnessData.dailyVideo);
+        rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData));
+        videoId = fitnessData.dailyVideo;
+        videoName = ""+fitnessData.dailyVideoName;
+        tvDailyVideo.setText(videoName);
+        cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
     }
 
     private void loadVideoThumbnail(String dailyVideo) {

@@ -5,20 +5,20 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
-
-import com.udacity.getfit.dao.WorkoutData;
+import com.udacity.getfit.dao.WorkoutMaster;
+import com.udacity.getfit.dao.WorkoutsDao;
 
 /**
  * Created by HARSHAD on 15/08/2018.
  */
 
-//@Database(entities = {WorkoutData.class}, version = 1, exportSchema = false)
+@Database(entities = {WorkoutMaster.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase sInstance;
     private static final Object LOCK = new Object();
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final String DATABASE_NAME = "reportDb";
+    private static final String DATABASE_NAME = "workoutDb";
 
     public static AppDatabase getInstance(Context context){
         if(sInstance == null){
@@ -33,6 +33,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-//    public abstract ReportsDao reportsDao();
+    public abstract WorkoutsDao workoutsDao();
 }
 
