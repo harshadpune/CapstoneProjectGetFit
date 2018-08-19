@@ -104,7 +104,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
                 if(!TextUtils.isEmpty(videoId))
                     youTubePlayer.loadVideo(videoId);
                 else
-                    Toast.makeText(YoutubePlayerActivity.this, "Some Error Occurred!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(YoutubePlayerActivity.this, getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -138,9 +138,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements View.O
                                         if(favoriteData.getVideoId().equalsIgnoreCase(videoId)){
                                             String removeKey = dataSnapshot2.getKey();
                                             favoriteRemoveReference.child(Utils.getCurrentUserForDB(""+FirebaseAuth.getInstance().getCurrentUser().getEmail())).child(removeKey).removeValue();
-                                            Toast.makeText(YoutubePlayerActivity.this, "Removed "+ removeKey, Toast.LENGTH_SHORT).show();
                                             deleteVideoAndUpdateAdapter(videoId);
-                                            Log.d("YoutubePlayer","-------------- isAlreadyBookmarked false");
                                             favoriteReference.removeEventListener(this);
                                         }
                                     }

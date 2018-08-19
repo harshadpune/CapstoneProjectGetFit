@@ -3,12 +3,12 @@
 
 
     <item android:id="@+id/menuFavoriteVideos"
-        android:title="Favorite Videos"/>
+        android:title="@string/favorite_videos"/>
 
     <item android:id="@+id/menuReport"
-        android:title="Report"/>
+        android:title="@string/report"/>
 
     <item android:id="@+id/menuLogout"
-        android:title="Logout"/>
+        android:title="@string/logout"/>
 
 </menu>

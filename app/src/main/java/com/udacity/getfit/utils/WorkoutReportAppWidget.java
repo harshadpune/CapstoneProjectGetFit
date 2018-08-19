@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,8 +70,8 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
 
         final ArrayList<WorkoutData> workoutDataList = new ArrayList();
         final Date todaysDate = Calendar.getInstance().getTime();
-        final SimpleDateFormat sf = new SimpleDateFormat("dd-MMM-yyyy");
-        final DatabaseReference workoutReferece = FirebaseDatabase.getInstance().getReference("workouts");
+        final SimpleDateFormat sf = new SimpleDateFormat(AppConstants.DATE_FORMAT);
+        final DatabaseReference workoutReferece = FirebaseDatabase.getInstance().getReference(AppConstants.WORKOUT_REFERENCE);
         workoutReferece.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,10 +83,6 @@ public class WorkoutReportAppWidget extends AppWidgetProvider {
                             if(workoutData.getDate().equalsIgnoreCase(sf.format(todaysDate)))
                                 workoutDataList.add(workoutData);
                         }
-
-                       /* for(int i=0; i< workoutDataList.size(); i++){
-                            Log.d("Widget","------workoutName "+workoutDataList.get(i).getWorkoutName());
-                        }*/
 
                         for (int appWidgetId : appWidgetIds) {
                             updateAppWidget(context, appWidgetManager, appWidgetId, workoutDataList);

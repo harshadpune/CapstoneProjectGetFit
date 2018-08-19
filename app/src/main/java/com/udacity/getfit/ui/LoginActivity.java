@@ -167,7 +167,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onSuccess(LoginResult loginResult) {
                                 // App code
-                                Toast.makeText(LoginActivity.this, "Callback registered!", Toast.LENGTH_SHORT).show();
                                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
                                 handleFacebookAccessToken(accessToken);
                             }
@@ -175,12 +174,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onCancel() {
                                 // App code
-                                Toast.makeText(LoginActivity.this, "Cancelled.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onError(FacebookException exception) {
-                                Toast.makeText(LoginActivity.this, "Something went wrong. Try again!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
                 break;
@@ -205,9 +204,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 existingUserLogin();
                             } else {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-//                                        Toast.LENGTH_SHORT).show();
-
                                 tvError.setVisibility(View.VISIBLE);
                                 tvError.setText(task.getException().getMessage());
                                 updateUI(null);
@@ -234,8 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
                             tvError.setVisibility(View.VISIBLE);
                             tvError.setText(task.getException().getMessage());
                             updateUI(null);
@@ -251,12 +246,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 pbLoading.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Welcome back. Lets get fit again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.lets_get_fit_again), Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(LoginActivity.this, "It seems this Email is already in use.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.email_already_in_use), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -270,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Connection Failed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show();
     }
 
 

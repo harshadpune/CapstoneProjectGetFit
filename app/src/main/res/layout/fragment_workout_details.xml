@@ -118,7 +118,7 @@
              style="@style/CardTextViewStyle"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="Comleted " />
+             android:text="@string/completed" />
 
          <ImageView
              android:layout_width="@dimen/height_40_dp"

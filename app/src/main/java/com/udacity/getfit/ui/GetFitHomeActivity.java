@@ -174,7 +174,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
 
                 FitnessData fitnessData = gson.fromJson(workoutMaster.getWorkoutMasterData(), new TypeToken<FitnessData>() {}.getType());
                 if(fitnessData !=null){
-                    Toast.makeText(GetFitHomeActivity.this, "No network. Showing Cached Data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GetFitHomeActivity.this, getString(R.string.showing_cached_data), Toast.LENGTH_SHORT).show();
                     Log.d("GetFitHomeActivity", "------------------Data Already Present. Getting it");
                     loadDataInUI(fitnessData);
                 }else{
@@ -253,7 +253,7 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()){
             case R.id.cvFitness:
                 if(TextUtils.isEmpty(videoId))
-                    Toast.makeText(this, "Please wait..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.please_wait), Toast.LENGTH_SHORT).show();
                 else {
                     Intent youtubePlayerIntent = new Intent(GetFitHomeActivity.this, YoutubePlayerActivity.class);
                     youtubePlayerIntent.putExtra(AppConstants.VIDEO_ID, "" + videoId);

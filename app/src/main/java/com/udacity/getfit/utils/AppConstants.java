@@ -12,4 +12,6 @@ public class AppConstants {
     public static final String YOUTUBE_API_KEY = "AIzaSyALmeO05S_HGh1aWyQDoSNCD-PzxPQdNqc";
     public static final String VIDEO_NAME = "videoName";
     public static final String INTENT_WORKOUT_LIST = "workoutsList";
+    public static String WORKOUT_REFERENCE = "workouts";
+    public static String DATE_FORMAT = "dd-MMM-yyyy";
 }

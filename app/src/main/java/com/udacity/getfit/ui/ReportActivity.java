@@ -76,6 +76,6 @@ public class ReportActivity extends AppCompatActivity {
         if(workoutDataList.size() != 0)
             rvReport.setAdapter(new ReportsRecyclerAdapter(ReportActivity.this, workoutDataList));
         else
-            Toast.makeText(this, "No data available!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
     }
 }
