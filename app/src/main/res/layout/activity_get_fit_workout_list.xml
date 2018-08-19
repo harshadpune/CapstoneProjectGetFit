@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 app:layout_collapseMode="pin"
-                app:contentInsetStart="0dp"
+                app:contentInsetStart="@dimen/margin_0_dp"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <LinearLayout
@@ -51,7 +51,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:lineSpacingMultiplier="0.9"
                         android:textColor="#fff"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_18_sp"
                         tools:text="SomeText"
                         android:textStyle="bold" />
 

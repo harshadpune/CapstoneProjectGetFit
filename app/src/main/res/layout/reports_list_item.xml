@@ -23,7 +23,7 @@
             tools:text="Crunches"
             android:textColor="@color/brown"
             android:fontFamily="sans-serif-medium"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size_16_sp"/>
 
         <TextView
             android:id="@+id/tvWorkoutTime"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:gravity="right"
             tools:text="01:15"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size_16_sp"/>
 
     </LinearLayout>
 
@@ -55,7 +55,7 @@
             android:textColor="@color/brown"
             android:fontFamily="sans-serif-medium"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_14_sp"
             tools:text="x20" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:gravity="right"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_14_sp"
             tools:text="12-Aug-2018"/>
     </LinearLayout>
 

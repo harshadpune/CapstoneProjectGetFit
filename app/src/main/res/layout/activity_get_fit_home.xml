@@ -39,7 +39,7 @@
             android:layout_below="@id/rvFitnessCards"
             style="@style/CardTextViewStyle"
             tools:text="Your are logged in as : "
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_14_sp"
             android:layout_marginLeft="@dimen/margin_20_dp"
             android:layout_marginTop="@dimen/margin_20_dp"
             android:layout_marginBottom="@dimen/margin_20_dp"/>
