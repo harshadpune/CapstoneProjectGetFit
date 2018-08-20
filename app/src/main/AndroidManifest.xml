@@ -23,7 +23,6 @@
         </activity>
         <activity
             android:name=".ui.GetFitHomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/ActionBarTheme"
             android:launchMode="singleTop"/>
         <activity

@@ -3,6 +3,7 @@ package com.udacity.getfit.ui;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,10 +33,11 @@ import com.udacity.getfit.network.RetrofitAPIInterface;
 import com.udacity.getfit.network.RetrofitApiClient;
 import com.udacity.getfit.utils.AppConstants;
 import com.udacity.getfit.utils.FitnessCardsRecyclerAdapter;
-import java.util.List;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GetFitHomeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,6 +52,8 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
     private String videoName = "";
     private AppDatabase mDb;
     private Gson gson;
+    private List<FitnessData> fitnessData = new ArrayList();
+    private LoadFitnessDataFromNetwork loadFitnessDataFromNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,15 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
         actionBar.setTitle(getResources().getString(R.string.workoutCategories));
         initComponents();
         setListeners();
-        loadFitnessData();
+        if(savedInstanceState != null && savedInstanceState.getBoolean(AppConstants.BOOL_IS_DATA_STORED)){
+            FitnessData fitnessData1 = (FitnessData) savedInstanceState.getSerializable(AppConstants.SAVED_INSTANCE_FITNESS);
+            fitnessData.add(fitnessData1);
+        }else{
+            if(loadFitnessDataFromNetwork != null)
+            loadFitnessDataFromNetwork.cancel(true);
+            loadFitnessData();
+        }
+
     }
 
     private void setListeners() {
@@ -83,26 +95,8 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
         RetrofitAPIInterface retrofitAPIInterface = RetrofitApiClient.getClient().create(RetrofitAPIInterface.class);
         //Get video list
         final Call<List<FitnessData>> fitnessData = retrofitAPIInterface.getFitnessData();
-
-        fitnessData.enqueue(new Callback<List<FitnessData>>() {
-            @Override
-            public void onResponse(Call<List<FitnessData>> call, Response<List<FitnessData>> response) {
-                List<FitnessData> fitnessData = response.body();
-                loadVideoThumbnail(fitnessData.get(0).dailyVideo);
-                rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData.get(0)));
-                videoId = fitnessData.get(0).dailyVideo;
-                videoName = ""+fitnessData.get(0).dailyVideoName;
-                tvDailyVideo.setText(videoName);
-                cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
-                setFitnessDataInDb(fitnessData.get(0));
-            }
-
-            @Override
-            public void onFailure(Call<List<FitnessData>> call, Throwable t) {
-                fitnessData.cancel();
-                loadFitnessDataFromDb();
-            }
-        });
+        loadFitnessDataFromNetwork =new LoadFitnessDataFromNetwork();
+        loadFitnessDataFromNetwork.execute(fitnessData);
     }
 
     /**
@@ -190,12 +184,14 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
      * @param fitnessData
      */
     private void loadDataInUI(FitnessData fitnessData) {
-        loadVideoThumbnail(fitnessData.dailyVideo);
-        rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData));
-        videoId = fitnessData.dailyVideo;
-        videoName = ""+fitnessData.dailyVideoName;
-        tvDailyVideo.setText(videoName);
-        cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
+        if(fitnessData!= null) {
+            loadVideoThumbnail(fitnessData.dailyVideo);
+            rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData));
+            videoId = fitnessData.dailyVideo;
+            videoName = "" + fitnessData.dailyVideoName;
+            tvDailyVideo.setText(videoName);
+            cvFitness.setContentDescription(videoName + " " + getString(R.string.cd_video_card));
+        }
     }
 
     private void loadVideoThumbnail(String dailyVideo) {
@@ -262,5 +258,57 @@ public class GetFitHomeActivity extends AppCompatActivity implements View.OnClic
                 }
             break;
         }
+    }
+
+
+    private class LoadFitnessDataFromNetwork extends AsyncTask<Call, Void, List<FitnessData>> {
+
+        @Override
+        protected List<FitnessData> doInBackground(Call... calls) {
+            try {
+                Call<List<FitnessData>> call = calls[0];
+                Response<List<FitnessData>> response = call.execute();
+                return response.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<FitnessData> result) {
+            if(result != null){
+                fitnessData = result;
+                loadVideoThumbnail(fitnessData.get(0).dailyVideo);
+                rvFitnessCards.setAdapter(new FitnessCardsRecyclerAdapter(GetFitHomeActivity.this, fitnessData.get(0)));
+                videoId = fitnessData.get(0).dailyVideo;
+                videoName = ""+fitnessData.get(0).dailyVideoName;
+                tvDailyVideo.setText(videoName);
+                cvFitness.setContentDescription(videoName+" "+getString(R.string.cd_video_card));
+                setFitnessDataInDb(fitnessData.get(0));
+            }else{
+                loadFitnessDataFromDb();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(fitnessData != null && fitnessData.size() != 0){
+            outState.putSerializable(AppConstants.SAVED_INSTANCE_FITNESS, fitnessData.get(0));
+            outState.putBoolean(AppConstants.BOOL_IS_DATA_STORED, true);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState == null || fitnessData.size() == 0) {
+            loadFitnessData();
+        }
+        else {
+            loadDataInUI(fitnessData.get(0));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }
